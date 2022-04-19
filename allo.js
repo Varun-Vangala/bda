@@ -95,65 +95,6 @@ d3.svg("map.svg").then(function(xml) {
             .attr("width", 1.5)
             .style("fill", "black");
 
-        //Bar Graph
-        function drawBarGraph(data){
-            width = 0
-            var x = d3.scale.linear()
-                .range([0, width])
-                .domain([0, d3.max(data, function (d) {
-                    return d.value;
-                })]);
-
-            var y = d3.scale.ordinal()
-                .rangeRoundBands([height, 0], .1)
-                .domain(data.map(function (d) {
-                    return d.name;
-                }));
-
-            //make y axis to show bar names
-            var yAxis = d3.svg.axis()
-                .scale(y)
-                //no tick marks
-                .tickSize(0)
-                .orient("left");
-
-            var gy = svg.append("g")
-                .attr("class", "y axis")
-                .call(yAxis)
-
-            var bars = svg.selectAll(".bar")
-                .data(data)
-                .enter()
-                .append("g")
-
-            //append rects
-            bars.append("rect")
-                .attr("class", "bar")
-                .attr("y", function (d) {
-                    return y(d.name);
-                })
-                .attr("height", y.rangeBand())
-                .attr("x", 0)
-                .attr("width", function (d) {
-                    return x(d.value);
-                });
-
-            //add a value label to the right of each bar
-            bars.append("text")
-                .attr("class", "label")
-                //y position of the label is halfway down the bar
-                .attr("y", function (d) {
-                    return y(d.name) + y.rangeBand() / 2 + 4;
-                })
-                //x position is 3 pixels to the right of the bar
-                .attr("x", function (d) {
-                    return x(d.value) + 3;
-                })
-                .text(function (d) {
-                    return d.value;
-                });
-        }
-
 
         mapRoot.selectAll("polygon")
                 .on("mouseover", function(d) {
@@ -161,6 +102,7 @@ d3.svg("map.svg").then(function(xml) {
                     rows = data.filter(function(dd){return dd.sec == section})
                     text = ""
                     if(rows.length > 0){
+                        text = text.concat(rows[0].section + "<br>" + "Traffic Percentile: "+  Math.round(rows[0].tperc) + "% <br> <br>")
                         for (var i = 0; i <= rows.length - 1; i++) {
                             if (i > 0){
                                 text = text.concat("<br>")
@@ -180,16 +122,16 @@ d3.svg("map.svg").then(function(xml) {
                         traff = rows[0].traffic
                         scatter.append("text")
                             .attr("id", "highlight")
-                            .attr("fill", color2[0])
-                            .attr("font-size", 10)
+                            .attr("fill", "black")
+                            .attr("font-size", 12)
                             .attr("transform", "translate(" + 0 + ","+ 250 +")")
                             .style("text-anchor", "left")
                             .attr('font-family', text_font)
                             .text("This section has a traffic score of " + Math.round(traff));
                         scatter.append("text")
                             .attr("id", "highlight")
-                            .attr("fill", color2[0])
-                            .attr("font-size", 10)
+                            .attr("fill", "black")
+                            .attr("font-size", 12)
                             .attr("transform", "translate(" + 0 + ","+ 265 +")")
                             .style("text-anchor", "left")
                             .attr('font-family', text_font)
@@ -207,6 +149,14 @@ d3.svg("map.svg").then(function(xml) {
                                     .attr("fill", color2[1])
                                     .attr('stroke', color2[0])
                                     .attr('stroke-width', 2)
+                                scatter.append("text")
+                                    .attr("id", "highlight")
+                                    .attr("fill", "black")
+                                    .attr("font-size", 12)
+                                    .attr("transform", "translate(" + 0 + ","+ (280+(15*i)) +")")
+                                    .style("text-anchor", "left")
+                                    .attr('font-family', text_font)
+                                    .text("Changing section " + rows[i].section + " results in a " + (Math.round(100*(rows[i].nrev- rows[i].orev)/rows[i].orev)) + "% revenue change");
                             }
 
                         }
