@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    svg {
+      max-height: calc(100vh - 10px);
+      max-width: calc(100vw - 10px);
+    }
+    .aParent div {
+      display:flex;
+    }
+    .tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 2px;
+        font: 12px sans-serif;
+        background: lightsteelblue;
+        border: 0px;
+        border-radius: 8px;
+        pointer-events: none;
+    }
+    </style>
+</head>
+
+<body>
+  <div class="container">
+      <div id="svg-container"></div>
+      <div id="scatter"></div>
+  </div>
+  <div id="bar-graph"></div>
+  <script src="https://d3js.org/d3.v5.min.js" defer></script>
+  <script src="allo.js" defer></script>
+</body>
+
+</html>
